@@ -1,18 +1,18 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import TagPosts from '../../components/TagPosts';
-import { getCollection } from 'astro:content';
+import Layout from "../../layouts/Layout.astro";
+import TagPosts from "../../components/TagPosts";
+import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
-  const tags = [...new Set(posts.flatMap(post => post.data.tags))];
+  const posts = await getCollection("blog");
+  const tags = [...new Set(posts.flatMap((post) => post.data.tags))];
 
-  return tags.map(tag => ({
+  return tags.map((tag) => ({
     params: { tag },
     props: {
-      posts: posts.filter(post => post.data.tags.includes(tag)),
-      tag
-    }
+      posts: posts.filter((post) => post.data.tags.includes(tag)),
+      tag,
+    },
   }));
 }
 
@@ -20,16 +20,28 @@ const { tag } = Astro.params;
 const { posts } = Astro.props;
 ---
 
-<Layout title={`Artículos etiquetados "${tag}" - DevFlow`}>
+<Layout title={`Artículos etiquetados "${tag}" - refuge`}>
   <div class="space-y-2 mb-8">
-    <div class="breadcrumb flex items-center gap-2 text-secondary-600 dark:text-accent-400 font-mono">
-      <a href="/" class="hover:text-primary-600 dark:hover:text-accent-300 transition-colors">Inicio</a>
+    <div
+      class="breadcrumb flex items-center gap-2 text-secondary-600 dark:text-accent-400 font-mono"
+    >
+      <a
+        href="/"
+        class="hover:text-primary-600 dark:hover:text-accent-300 transition-colors"
+        >Inicio</a
+      >
       <span class="text-secondary-400 dark:text-accent-600">></span>
-      <a href="/tags" class="hover:text-primary-600 dark:hover:text-accent-300 transition-colors">Etiquetas</a>
+      <a
+        href="/tags"
+        class="hover:text-primary-600 dark:hover:text-accent-300 transition-colors"
+        >Etiquetas</a
+      >
       <span class="text-secondary-400 dark:text-accent-600">></span>
       <span class="text-secondary-700 dark:text-accent-300">#{tag}</span>
     </div>
-    <h1 class="text-3xl font-mono text-primary-800 dark:text-accent-200">#{tag}</h1>
+    <h1 class="text-3xl font-mono text-primary-800 dark:text-accent-200">
+      #{tag}
+    </h1>
     <p class="font-mono italic text-secondary-600 dark:text-accent-400">
       Artículos etiquetados con #{tag}
     </p>
@@ -37,4 +49,3 @@ const { posts } = Astro.props;
 
   <TagPosts client:load initialPosts={posts} tag={tag} />
 </Layout>
-

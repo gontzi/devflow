@@ -1,192 +1,152 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
-import { filterPublishedPosts } from '../utils/filterPosts';
-import { calculateReadingTime } from '../utils/readingTime';
+import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { filterPublishedPosts } from "../utils/filterPosts";
+import { calculateReadingTime } from "../utils/readingTime";
 
-const allPosts = await getCollection('blog');
+const allPosts = await getCollection("blog");
 const publishedPosts = filterPublishedPosts(allPosts);
 const sortedPosts = publishedPosts
   .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
-  .slice(0, 3); // Solo los 3 posts más recientes publicados
+  .slice(0, 3);
 ---
 
-<Layout title="DevFlow - Desarrollo creativo">
+<Layout title="refuge — santuario digital">
   <!-- Hero Section -->
-  <section class="relative min-h-[90vh] flex items-center">
-    <div class="container mx-auto px-4">
-      <div class="max-w-4xl mx-auto text-center space-y-8">
-        <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold font-mono">
-          <span class="bg-clip-text text-transparent bg-gradient-to-r from-surface-900 to-surface-600 dark:from-white dark:to-surface-400">
-            Desarrollo web creativo y minimalista
-          </span>
-        </h1>
-        
-        <p class="text-xl md:text-2xl text-surface-600 dark:text-surface-300 font-mono leading-relaxed">
-          Explorando la intersección entre el código y la creatividad. 
-          Un blog sobre desarrollo web, diseño y tecnología.
+  <section class="mb-32">
+    <div class="space-y-12">
+      <div class="space-y-4">
+        <p
+          class="text-sm uppercase tracking-[0.3em] text-refuge-muted font-medium"
+        >
+          santuario digital
         </p>
+        <h1
+          class="text-6xl md:text-8xl font-serif text-refuge-dark leading-[0.9] tracking-tighter"
+        >
+          Un espacio para<br />la <span class="italic text-refuge-accent/70"
+            >calma</span
+          > digital.
+        </h1>
+      </div>
 
-        <div class="flex flex-wrap justify-center gap-4">
-          <a 
-            href="#featured" 
-            class="px-8 py-4 text-lg font-mono bg-surface-900 text-white dark:bg-white dark:text-surface-900
-                   hover:bg-surface-800 dark:hover:bg-surface-100
-                   transition-all duration-300 transform hover:-translate-y-1"
-          >
-            Ver artículos
-          </a>
-          <a 
-            href="/about" 
-            class="px-8 py-4 text-lg font-mono
-                   border-2 border-surface-900 dark:border-white
-                   text-surface-900 dark:text-white
-                   hover:bg-surface-50 dark:hover:bg-surface-900
-                   transition-all duration-300 transform hover:-translate-y-1"
-          >
-            Sobre mí
-          </a>
-        </div>
+      <p
+        class="text-xl md:text-2xl text-refuge-text font-light max-w-xl leading-relaxed"
+      >
+        Exploraciones sobre diseño lento, desarrollo consciente y la belleza de
+        lo esencial. Un refugio ante la sobreestimulación.
+      </p>
+
+      <div class="pt-8">
+        <a
+          href="#featured"
+          class="refuge-tag px-8 py-3 bg-refuge-dark text-refuge-bg hover:bg-refuge-accent transition-all inline-block lowercase tracking-normal text-sm"
+        >
+          explorar archivos
+        </a>
       </div>
     </div>
   </section>
 
   <!-- Featured Posts Section -->
-  <section id="featured" class="py-32">
-    <div class="container mx-auto px-4">
-      <div class="max-w-4xl mx-auto">
-        <div class="text-center space-y-4 mb-16">
-          <h2 class="text-4xl font-mono font-bold text-surface-900 dark:text-white">
-            Artículos destacados
+  <section id="featured" class="py-32 border-t border-refuge-surface">
+    <div class="space-y-24">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-8">
+        <div class="space-y-4">
+          <h2 class="text-4xl md:text-5xl font-serif text-refuge-dark">
+            Escritos recientes
           </h2>
-          <p class="text-surface-600 dark:text-surface-300 text-lg font-mono">
-            Las últimas publicaciones del blog
+          <p class="text-refuge-muted font-light text-lg italic serif">
+            Pensamientos pausados sobre tecnología.
           </p>
         </div>
+        <a
+          href="/blog"
+          class="text-sm uppercase tracking-widest text-refuge-muted hover:text-refuge-dark transition-colors border-b border-refuge-accent/30 pb-1"
+          >ver todo el archivo</a
+        >
+      </div>
 
-        <div class="space-y-0">
-          {sortedPosts.map((post) => (
-            <article class="group py-8 first:pt-0 border-b border-surface-200 dark:border-surface-700/50 last:border-0">
-              <a 
-                href={`/blog/${post.slug}`} 
-                class="block space-y-4 transition-all duration-300 hover:-translate-y-1"
-              >
-                <div class="flex flex-wrap items-center gap-3 text-sm">
-                  <span 
-                    class="px-3 py-1 text-xs font-medium font-mono rounded-full bg-surface-100/50 
-                           dark:bg-surface-800/50 text-surface-900 dark:text-surface-300
-                           transition-colors duration-300 group-hover:bg-surface-200/50 
-                           dark:group-hover:bg-surface-700/50"
-                  >
-                    {post.data.category}
-                  </span>
-                  <div class="flex items-center gap-3 text-surface-500 dark:text-surface-400 font-mono">
-                    <time datetime={post.data.publishDate.toISOString()}>
-                      {new Date(post.data.publishDate).toLocaleDateString('es-ES', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })}
-                    </time>
-                    <span class="text-surface-300 dark:text-surface-600">•</span>
-                    <span>{calculateReadingTime(post.body)} min lectura</span>
-                  </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24">
+        {
+          sortedPosts.map((post, index) => (
+            <article
+              class={`group space-y-6 ${index === 0 ? "md:col-span-2 max-w-4xl" : ""}`}
+            >
+              <a href={`/blog/${post.slug}`} class="block space-y-8">
+                <div class="flex items-center gap-4 text-xs font-medium tracking-widest uppercase text-refuge-muted">
+                  <span>{post.data.category}</span>
+                  <span class="w-8 h-px bg-refuge-accent/30" />
+                  <time datetime={post.data.publishDate.toISOString()}>
+                    {new Date(post.data.publishDate).toLocaleDateString(
+                      "es-ES",
+                      {
+                        month: "short",
+                        day: "numeric",
+                      },
+                    )}
+                  </time>
                 </div>
 
-                <h3 
-                  class="text-2xl font-bold font-mono text-surface-900 dark:text-surface-50 
-                         group-hover:text-surface-600 dark:group-hover:text-surface-400 
-                         transition-colors duration-300"
-                >
-                  {post.data.title}
-                </h3>
-
-                <p class="text-surface-600 dark:text-surface-300 leading-relaxed">
-                  {post.data.description}
-                </p>
-
-                <div class="inline-flex items-center text-surface-600 dark:text-surface-400 font-medium pt-2">
-                  <span class="text-sm font-mono">Leer más</span>
-                  <svg 
-                    class="w-4 h-4 ml-2 transform transition-transform duration-300 group-hover:translate-x-2" 
-                    fill="none" 
-                    viewBox="0 0 24 24" 
-                    stroke="currentColor"
+                <div class="space-y-4">
+                  <h3
+                    class={`font-serif text-refuge-dark group-hover:text-refuge-accent transition-colors leading-[1.1] ${index === 0 ? "text-4xl md:text-6xl" : "text-3xl md:text-4xl"}`}
                   >
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
+                    {post.data.title}
+                  </h3>
+                  <p class="text-lg text-refuge-text font-light leading-relaxed line-clamp-2 italic serif opacity-80">
+                    {post.data.description}
+                  </p>
+                </div>
+
+                <div class="pt-2">
+                  <span class="text-xs uppercase tracking-[0.2em] text-refuge-muted border-b border-transparent group-hover:border-refuge-accent pb-1 transition-all">
+                    leer reflexión
+                  </span>
                 </div>
               </a>
             </article>
-          ))}
-        </div>
-
-        <div class="text-center mt-12">
-          <a 
-            href="/blog" 
-            class="inline-flex items-center justify-center px-8 py-4 text-lg font-mono
-                   border-2 border-surface-900 dark:border-white
-                   text-surface-900 dark:text-white
-                   hover:bg-surface-50 dark:hover:bg-surface-900
-                   transition-all duration-300 transform hover:-translate-y-1"
-          >
-            Ver todos los artículos
-          </a>
-        </div>
+          ))
+        }
       </div>
     </div>
   </section>
 
   <!-- Newsletter Section -->
-  <section class="py-32">
-    <div class="container mx-auto px-4">
-      <div class="max-w-4xl mx-auto">
-        <div class="relative overflow-hidden rounded-2xl bg-surface-900 dark:bg-surface-800 p-8 md:p-12">
-          Decorative background
-          <div class="absolute inset-0 z-0">
-            <div class="absolute inset-0 bg-gradient-to-br from-surface-800 to-surface-900 dark:from-surface-700 dark:to-surface-800 opacity-90"></div>
-            <div class="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>
-          </div>
-
-          <div class="relative z-10 text-center space-y-8">
-            <h2 class="text-3xl md:text-4xl font-mono font-bold text-white">
-              Suscríbete al newsletter
-            </h2>
-            <p class="text-lg text-surface-300 max-w-2xl mx-auto">
-              Recibe actualizaciones sobre nuevos artículos, recursos y contenido exclusivo directamente en tu correo.
-              Sin spam, solo contenido valioso.
-            </p>
-
-            <form class="max-w-md mx-auto space-y-4">
-              <div class="flex gap-4">
-                <input 
-                  type="email" 
-                  placeholder="tu@email.com" 
-                  class="flex-1 px-4 py-3 bg-white/10 border border-white/20 
-                         text-white placeholder-white/50 rounded-lg focus:outline-none 
-                         focus:border-white/40 transition-colors font-mono"
-                  required
-                />
-                <button 
-                  type="submit"
-                  class="px-6 py-3 bg-white text-surface-900 rounded-lg font-mono
-                         hover:bg-surface-100 transition-colors"
-                >
-                  Suscribirse
-                </button>
-              </div>
-              <p class="text-sm text-surface-400">
-                Te enviaremos un email para confirmar tu suscripción.
-              </p>
-            </form>
-          </div>
-
-          <!-- Decorative elements -->
-          <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
-          <div class="absolute -top-6 -right-6 w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
-        </div>
+  <section class="py-32 border-t border-refuge-surface">
+    <div class="refuge-card max-w-2xl mx-auto text-center space-y-12 py-16">
+      <div class="space-y-4">
+        <h2 class="text-3xl md:text-4xl font-serif text-refuge-dark italic">
+          Correspondencia
+        </h2>
+        <p class="text-refuge-text font-light max-w-md mx-auto leading-relaxed">
+          Recibe una notificación silenciosa cuando algo nuevo sea habitado en
+          este refugio. Sin ruido, solo esencia.
+        </p>
       </div>
+
+      <form class="space-y-6 max-w-sm mx-auto">
+        <div class="relative">
+          <input
+            type="email"
+            placeholder="tu dirección de correo"
+            class="w-full bg-transparent border-b border-refuge-accent/30 py-3 focus:outline-none focus:border-refuge-accent transition-all text-center font-light placeholder:text-refuge-muted/50"
+            required
+          />
+        </div>
+        <button
+          type="submit"
+          class="w-full refuge-tag py-3 bg-refuge-bg border border-refuge-accent/20 text-refuge-text hover:bg-refuge-accent hover:text-refuge-bg transition-all lowercase tracking-normal"
+        >
+          unirse a la calma
+        </button>
+      </form>
+
+      <p
+        class="text-[10px] uppercase tracking-widest text-refuge-muted opacity-50"
+      >
+        Privacidad respetada. Silencio garantizado.
+      </p>
     </div>
   </section>
 </Layout>
-

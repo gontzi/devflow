@@ -1,81 +1,66 @@
 ---
-import { getCollection } from 'astro:content';
-import type { CollectionEntry } from 'astro:content';
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 
 interface Props {
-  currentPost: CollectionEntry<'blog'>;
+  currentPost: CollectionEntry<"blog">;
   category: string;
 }
 
 const { currentPost, category } = Astro.props;
 
-const allPosts = await getCollection('blog');
+const allPosts = await getCollection("blog");
 const relatedPosts = allPosts
-  .filter(post => 
-    post.data.category === category && 
-    post.slug !== currentPost.slug
+  .filter(
+    (post) => post.data.category === category && post.slug !== currentPost.slug,
   )
   .slice(0, 3);
 ---
 
-{relatedPosts.length > 0 && (
-  <div class="mt-16">
-    <h2 class="text-2xl font-bold mb-8 text-gray-900 dark:text-primary-100">Posts relacionados</h2>
-    <div class="space-y-8">
-      {relatedPosts.map((post) => (
-        <article class="group border-b dark:border-chocolate-800/50 pb-8 last:border-0">
-          <a 
-            href={`/blog/${post.slug}`}
-            class="block space-y-3 transition-all duration-300 hover:-translate-y-1"
-          >
-            <div class="flex flex-wrap items-center gap-3 text-sm">
-              <span 
-                class="px-3 py-1 text-xs font-medium rounded-full bg-primary-50/50 
-                       dark:bg-chocolate-700/30 text-primary-800 dark:text-primary-100
-                       transition-colors duration-300 group-hover:bg-primary-100 
-                       dark:group-hover:bg-chocolate-700/50"
-              >
-                {post.data.category}
-              </span>
-              <time 
-                class="text-gray-500 dark:text-primary-300/70"
-                datetime={post.data.publishDate.toISOString()}
-              >
-                {new Date(post.data.publishDate).toLocaleDateString('es-ES', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}
-              </time>
-            </div>
+{
+  relatedPosts.length > 0 && (
+    <div class="space-y-12">
+      <div class="space-y-2">
+        <h2 class="text-[10px] uppercase tracking-[0.3em] text-refuge-muted font-medium">
+          lecturas sugeridas
+        </h2>
+        <p class="text-2xl font-serif text-refuge-dark italic">
+          Habitaciones contiguas
+        </p>
+      </div>
 
-            <h3 
-              class="text-xl font-semibold text-gray-900 dark:text-primary-100 
-                     group-hover:text-chocolate-700 dark:group-hover:text-primary-200 
-                     transition-colors duration-300"
-            >
-              {post.data.title}
-            </h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+        {relatedPosts.map((post) => (
+          <article class="group space-y-4">
+            <a href={`/blog/${post.slug}`} class="block space-y-4">
+              <div class="flex items-center gap-4 text-[10px] uppercase tracking-widest text-refuge-muted">
+                <span>{post.data.category}</span>
+                <span class="w-4 h-px bg-refuge-accent/20" />
+                <time datetime={post.data.publishDate.toISOString()}>
+                  {new Date(post.data.publishDate).toLocaleDateString("es-ES", {
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </time>
+              </div>
 
-            <p class="text-gray-600 dark:text-primary-200/80 text-sm leading-relaxed">
-              {post.data.description}
-            </p>
+              <h3 class="text-xl md:text-2xl font-serif text-refuge-dark group-hover:text-refuge-accent transition-colors leading-tight tracking-tight">
+                {post.data.title}
+              </h3>
 
-            <div class="inline-flex items-center text-chocolate-600 dark:text-primary-300 font-medium pt-2">
-              <span class="text-sm">Leer más</span>
-              <svg 
-                class="w-4 h-4 ml-2 transform transition-transform duration-300 group-hover:translate-x-2" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor"
-              >
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </div>
-          </a>
-        </article>
-      ))}
+              <p class="text-sm text-refuge-text font-light leading-relaxed line-clamp-2 italic serif opacity-80">
+                {post.data.description}
+              </p>
+
+              <div class="pt-2">
+                <span class="text-[10px] uppercase tracking-[0.2em] text-refuge-muted border-b border-transparent group-hover:border-refuge-accent pb-1 transition-all">
+                  entrar
+                </span>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
     </div>
-  </div>
-)}
-
+  )
+}

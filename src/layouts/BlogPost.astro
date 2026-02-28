@@ -1,13 +1,12 @@
 ---
-import Layout from './Layout.astro';
-import ShareButtons from '../components/ShareButtons';
-import RelatedPosts from '../components/RelatedPosts.astro';
-import { type CollectionEntry } from 'astro:content';
-import { calculateReadingTime } from '../utils/readingTime';
-import { ArrowLeft } from 'lucide-react';
+import Layout from "./Layout.astro";
+import RelatedPosts from "../components/RelatedPosts.astro";
+import ShareButtons from "../components/ShareButtons";
+import { type CollectionEntry } from "astro:content";
+import { calculateReadingTime } from "../utils/readingTime";
 
 interface Props {
-  post: CollectionEntry<'blog'>;
+  post: CollectionEntry<"blog">;
 }
 
 const { post } = Astro.props;
@@ -15,108 +14,86 @@ const { Content } = await post.render();
 const readingTime = calculateReadingTime(post.body);
 ---
 
-<Layout 
-  title={post.data.title}
+<Layout
+  title={`${post.data.title} — refuge`}
   description={post.data.description}
 >
-  <article class="relative max-w-2xl mx-auto">
-    <div class="mb-8">
-      <a 
-        href="/blog" 
-        class="inline-flex items-center gap-2 px-4 py-2 text-sm font-mono
-               text-primary-600 hover:text-primary-800 dark:text-accent-400 
-               dark:hover:text-accent-200 transition-colors duration-300
-               hover:-translate-x-1 transform-gpu group"
+  <article class="relative max-w-3xl mx-auto space-y-16">
+    <div class="space-y-12">
+      <a
+        href="/"
+        class="group inline-flex items-center gap-4 text-xs uppercase tracking-[0.3em] text-refuge-muted hover:text-refuge-dark transition-colors"
       >
-        <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" />
-        Volver a artículos
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="group-hover:-translate-x-1 transition-transform"
+          ><path d="m15 18-6-6 6-6"></path></svg
+        >
+        regresar al refugio
       </a>
-    </div>
 
-    <header class="mb-12">
-      <div class="space-y-4">
-        <div class="flex flex-wrap items-center gap-4 text-sm">
-          <span class="px-3 py-1 font-mono text-xs rounded-full 
-                     bg-primary-100 dark:bg-primary-800/50 
-                     text-primary-700 dark:text-accent-300">
-            {post.data.category}
-          </span>
-          <div class="flex items-center gap-3 font-mono text-secondary-600 dark:text-accent-400">
-            <time datetime={post.data.publishDate.toISOString()}>
-              {new Date(post.data.publishDate).toLocaleDateString('es-ES', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </time>
-            <span class="text-secondary-400 dark:text-accent-700">•</span>
-            <span>{readingTime} min lectura</span>
-          </div>
+      <header class="space-y-8">
+        <div
+          class="flex items-center gap-4 text-xs font-medium tracking-widest uppercase text-refuge-muted"
+        >
+          <span>{post.data.category}</span>
+          <span class="w-8 h-px bg-refuge-accent/30"></span>
+          <time datetime={post.data.publishDate.toISOString()}>
+            {
+              new Date(post.data.publishDate).toLocaleDateString("es-ES", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })
+            }
+          </time>
         </div>
 
-        <h1 class="text-3xl md:text-4xl font-mono font-bold text-primary-800 dark:text-accent-100">
+        <h1
+          class="text-5xl md:text-7xl font-serif text-refuge-dark leading-[1.1] tracking-tighter"
+        >
           {post.data.title}
         </h1>
 
-        <p class="text-lg text-secondary-700 dark:text-accent-300">
+        <p
+          class="text-xl md:text-2xl text-refuge-text font-light leading-relaxed italic opacity-80 serif border-l border-refuge-accent/20 pl-8"
+        >
           {post.data.description}
         </p>
-      </div>
-    </header>
+      </header>
+    </div>
 
-    <div class="prose prose-lg dark:prose-invert">
+    <div class="prose">
       <Content />
     </div>
 
-    <footer class="mt-16 pt-8 border-t dark:border-primary-800">
-      <div class="flex flex-wrap gap-2 mb-8">
-        {post.data.tags.map((tag) => (
-          <a
-            href={`/tags/${tag}`}
-            class="px-3 py-1 font-mono text-xs rounded-full 
-                   bg-nature-100 dark:bg-primary-800/50 
-                   text-primary-700 dark:text-accent-300 
-                   hover:bg-nature-200 dark:hover:bg-primary-700/50
-                   transition-all duration-300 hover:-translate-y-1"
-          >
-            #{tag}
-          </a>
-        ))}
+    <footer class="pt-24 space-y-16 border-t border-refuge-surface">
+      <div class="flex flex-wrap gap-4">
+        {
+          post.data.tags.map((tag) => (
+            <a
+              href={`/tags/${tag}`}
+              class="refuge-tag px-6 py-2 border border-refuge-accent/10 hover:border-refuge-accent/40 lowercase"
+            >
+              #{tag}
+            </a>
+          ))
+        }
       </div>
-      
-      <RelatedPosts 
-        currentPost={post}
-        category={post.data.category}
-      />
+
+      <div class="pt-12">
+        <RelatedPosts currentPost={post} category={post.data.category} />
+      </div>
+
+      <ShareButtons client:load />
     </footer>
   </article>
-
-  <ShareButtons client:load />
 </Layout>
-
-<style>
-/* Asegurarse de que el contenido tenga la opacidad correcta */
-article {
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-/* Asegurarse de que el header sea visible */
-header {
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-/* Mejorar la legibilidad del contenido */
-.prose {
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-/* Asegurarse de que los posts relacionados sean visibles */
-footer {
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-</style>
-

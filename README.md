@@ -1,6 +1,6 @@
-# DevFlow Blog ✍️
+# refuge Blog ✍️
 
-DevFlow es un blog moderno, rápido y minimalista construido con Astro y React. Cuenta con un diseño limpio, soporte para modo oscuro, sistema de etiquetas y excelentes métricas de rendimiento.
+refuge es un blog moderno, rápido y minimalista construido con Astro y React. Cuenta con un diseño limpio, soporte para modo oscuro, sistema de etiquetas y excelentes métricas de rendimiento.
 
 ### ✨ Características
 
@@ -18,10 +18,10 @@ DevFlow es un blog moderno, rápido y minimalista construido con Astro y React. 
 
 ```bash
 # Clonar el repositorio
-git clone https://github.com/AzalDevX/devflow.git
+git clone https://github.com/AzalDevX/refuge.git
 
 # Navegar al directorio del proyecto
-cd devflow
+cd refuge
 
 # Instalar dependencias
 npm install

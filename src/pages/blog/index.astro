@@ -1,41 +1,32 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import BlogList from '../../components/BlogList';
-import { getCollection } from 'astro:content';
+import Layout from "../../layouts/Layout.astro";
+import BlogList from "../../components/BlogList";
+import { getCollection } from "astro:content";
 
-const allPosts = await getCollection('blog');
+const allPosts = await getCollection("blog");
 ---
 
-<Layout title="Blog - DevFlow">
-  <div class="space-y-2 mb-8 fade-in">
-    <div class="breadcrumb flex items-center gap-2 text-secondary-600 dark:text-accent-400 font-mono">
-      <a href="/" class="hover:text-primary-600 dark:hover:text-accent-300 transition-colors">Inicio</a>
-      <span class="text-secondary-400 dark:text-accent-600">></span>
-      <span class="text-secondary-700 dark:text-accent-300">Artículos</span>
+<Layout title="archivo — refuge">
+  <div class="space-y-12 mb-24">
+    <div class="space-y-4">
+      <p
+        class="text-xs uppercase tracking-[0.3em] text-refuge-muted font-medium"
+      >
+        colección de pensamientos
+      </p>
+      <h1
+        class="text-5xl md:text-7xl font-serif text-refuge-dark tracking-tighter"
+      >
+        Archivo
+      </h1>
+      <p
+        class="text-xl text-refuge-text font-light italic serif opacity-80 border-l border-refuge-accent/20 pl-6 max-w-lg"
+      >
+        Una recopilación de todas las exploraciones y reflexiones compartidas en
+        este espacio.
+      </p>
     </div>
-    <h1 class="text-3xl font-mono text-primary-800 dark:text-accent-200">Artículos</h1>
-    <p class="font-mono italic text-secondary-600 dark:text-accent-400">
-      Todos los artículos publicados.
-    </p>
   </div>
 
   <BlogList client:load initialPosts={allPosts} />
 </Layout>
-
-<style>
-.fade-in {
-  animation: fadeIn 0.5s ease forwards;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-</style>
-
